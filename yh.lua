@@ -35,7 +35,7 @@ timeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 timeLabel.Font = Enum.Font.Gotham
 timeLabel.TextSize = 16
 
--- Slider background (Optional, can be kept or removed as per your preference)
+-- Slider background
 local sliderBG = Instance.new("Frame", main)
 sliderBG.Position = UDim2.new(0.5, -100, 0, 70)
 sliderBG.Size = UDim2.new(0, 200, 0, 6)
@@ -45,7 +45,7 @@ sliderBG.Name = "SliderBG"
 
 Instance.new("UICorner", sliderBG).CornerRadius = UDim.new(0, 3)
 
--- Knob (Optional, can be kept or removed as per your preference)
+-- Knob
 local knob = Instance.new("Frame", sliderBG)
 knob.Size = UDim2.new(0, 10, 0, 20)
 knob.Position = UDim2.new(0, 0, 0.5, -10)
@@ -68,7 +68,14 @@ credit.TextXAlignment = Enum.TextXAlignment.Right
 
 -- Countdown logic
 local running = false
-local selectedTime = 3580  -- Set the time to 3580s
+local selectedTime = 3575
+
+-- Function to update the knob position according to the remaining time
+local function updateSliderPosition(timeLeft)
+    local percentLeft = timeLeft / selectedTime
+    local knobPos = (1 - percentLeft) * sliderBG.AbsoluteSize.X
+    knob.Position = UDim2.new(0, knobPos - knob.AbsoluteSize.X / 2, knob.Position.Y.Scale, knob.Position.Y.Offset)
+end
 
 -- Start the countdown immediately
 local function startCountdown()
@@ -80,6 +87,7 @@ local function startCountdown()
 
     for i = selectedTime, 0, -1 do
         timeLabel.Text = "Time: " .. i .. "s"
+        updateSliderPosition(i)  -- Update the slider knob position
         task.wait(1)
     end
 
