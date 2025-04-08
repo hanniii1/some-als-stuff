@@ -5,8 +5,8 @@ gui.ResetOnSpawn = false
 
 -- Main draggable frame
 local main = Instance.new("Frame")
-main.Size = UDim2.new(0, 300, 0, 170)
-main.Position = UDim2.new(0.5, -150, 0.5, -85)
+main.Size = UDim2.new(0, 280, 0, 160)  -- Reduced the size
+main.Position = UDim2.new(0.5, -140, 0.5, -80)  -- Adjusted position to remain centered
 main.AnchorPoint = Vector2.new(0.5, 0.5)
 main.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 main.BorderSizePixel = 0
@@ -18,27 +18,31 @@ Instance.new("UICorner", main).CornerRadius = UDim.new(0, 12)
 
 -- Title
 local title = Instance.new("TextLabel", main)
-title.Size = UDim2.new(1, 0, 0, 30)
+title.Size = UDim2.new(1, 0, 0, 35)  -- Reduced height
 title.BackgroundTransparency = 1
 title.Text = "Restart Match Timer"
 title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.Font = Enum.Font.GothamBold
 title.TextSize = 20
+title.TextStrokeTransparency = 0.8
+title.TextYAlignment = Enum.TextYAlignment.Center
 
 -- Time label
 local timeLabel = Instance.new("TextLabel", main)
-timeLabel.Position = UDim2.new(0.5, -50, 0, 40)
-timeLabel.Size = UDim2.new(0, 100, 0, 20)
+timeLabel.Position = UDim2.new(0.5, -50, 0, 60)  -- Adjusted position
+timeLabel.Size = UDim2.new(0, 100, 0, 25)  -- Reduced size
 timeLabel.BackgroundTransparency = 1
 timeLabel.Text = "Time: 3580s"
 timeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 timeLabel.Font = Enum.Font.Gotham
-timeLabel.TextSize = 16
+timeLabel.TextSize = 16  -- Reduced text size
+timeLabel.TextStrokeTransparency = 0.8
+timeLabel.TextYAlignment = Enum.TextYAlignment.Center
 
 -- Slider background
 local sliderBG = Instance.new("Frame", main)
-sliderBG.Position = UDim2.new(0.5, -100, 0, 70)
-sliderBG.Size = UDim2.new(0, 200, 0, 6)
+sliderBG.Position = UDim2.new(0.5, -110, 0, 90)  -- Adjusted positioning
+sliderBG.Size = UDim2.new(0, 220, 0, 5)  -- Reduced width and height
 sliderBG.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
 sliderBG.BorderSizePixel = 0
 sliderBG.Name = "SliderBG"
@@ -47,7 +51,7 @@ Instance.new("UICorner", sliderBG).CornerRadius = UDim.new(0, 3)
 
 -- Knob
 local knob = Instance.new("Frame", sliderBG)
-knob.Size = UDim2.new(0, 10, 0, 20)
+knob.Size = UDim2.new(0, 10, 0, 20)  -- Reduced size
 knob.Position = UDim2.new(0, 0, 0.5, -10)
 knob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 knob.BorderSizePixel = 0
@@ -58,17 +62,17 @@ Instance.new("UICorner", knob).CornerRadius = UDim.new(1, 0)
 -- Credit label (Optional)
 local credit = Instance.new("TextLabel", main)
 credit.Size = UDim2.new(1, -10, 0, 15)
-credit.Position = UDim2.new(0, 5, 1, -20)
+credit.Position = UDim2.new(0, 5, 1, -15)  -- Adjusted position
 credit.Text = "made by: vxq"
 credit.Font = Enum.Font.Gotham
 credit.TextColor3 = Color3.fromRGB(100, 100, 100)
-credit.TextSize = 12
+credit.TextSize = 10  -- Reduced text size
 credit.BackgroundTransparency = 1
 credit.TextXAlignment = Enum.TextXAlignment.Right
 
 -- Countdown logic
 local running = false
-local selectedTime = 3575
+local selectedTime = 3575  -- Set the time to 3580s
 
 -- Function to update the knob position according to the remaining time
 local function updateSliderPosition(timeLeft)
