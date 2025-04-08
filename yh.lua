@@ -30,12 +30,12 @@ local timeLabel = Instance.new("TextLabel", main)
 timeLabel.Position = UDim2.new(0.5, -50, 0, 40)
 timeLabel.Size = UDim2.new(0, 100, 0, 20)
 timeLabel.BackgroundTransparency = 1
-timeLabel.Text = "Time: 10s"
+timeLabel.Text = "Time: 3580s"
 timeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 timeLabel.Font = Enum.Font.Gotham
 timeLabel.TextSize = 16
 
--- Slider background
+-- Slider background (Optional, can be kept or removed as per your preference)
 local sliderBG = Instance.new("Frame", main)
 sliderBG.Position = UDim2.new(0.5, -100, 0, 70)
 sliderBG.Size = UDim2.new(0, 200, 0, 6)
@@ -45,7 +45,7 @@ sliderBG.Name = "SliderBG"
 
 Instance.new("UICorner", sliderBG).CornerRadius = UDim.new(0, 3)
 
--- Knob
+-- Knob (Optional, can be kept or removed as per your preference)
 local knob = Instance.new("Frame", sliderBG)
 knob.Size = UDim2.new(0, 10, 0, 20)
 knob.Position = UDim2.new(0, 0, 0.5, -10)
@@ -55,19 +55,7 @@ knob.Name = "Knob"
 
 Instance.new("UICorner", knob).CornerRadius = UDim.new(1, 0)
 
--- Start button
-local button = Instance.new("TextButton", main)
-button.Position = UDim2.new(0.5, -50, 1, -60)
-button.Size = UDim2.new(0, 100, 0, 30)
-button.Text = "Start"
-button.Font = Enum.Font.GothamBold
-button.TextSize = 16
-button.TextColor3 = Color3.fromRGB(255, 255, 255)
-button.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-
-Instance.new("UICorner", button).CornerRadius = UDim.new(0, 8)
-
--- Credit label
+-- Credit label (Optional)
 local credit = Instance.new("TextLabel", main)
 credit.Size = UDim2.new(1, -10, 0, 15)
 credit.Position = UDim2.new(0, 5, 1, -20)
@@ -78,73 +66,32 @@ credit.TextSize = 12
 credit.BackgroundTransparency = 1
 credit.TextXAlignment = Enum.TextXAlignment.Right
 
--- Slider logic
-local dragging = false
-local maxTime = 3600
-local minTime = 10
-local selectedTime = 10
+-- Countdown logic
+local running = false
+local selectedTime = 3580  -- Set the time to 3580s
 
-local UIS = game:GetService("UserInputService")
+-- Start the countdown immediately
+local function startCountdown()
+    running = true
 
-local function updateSlider(inputX)
-	local barStart = sliderBG.AbsolutePosition.X
-	local barWidth = sliderBG.AbsoluteSize.X
-	local clampedX = math.clamp(inputX - barStart, 0, barWidth)
+    -- Disable interactions
+    sliderBG.Active = false
+    knob.Active = false
 
-	local percent = clampedX / barWidth
-	selectedTime = math.floor(percent * (maxTime - minTime) + minTime)
+    for i = selectedTime, 0, -1 do
+        timeLabel.Text = "Time: " .. i .. "s"
+        task.wait(1)
+    end
 
-	knob.Position = UDim2.new(0, clampedX - knob.AbsoluteSize.X / 2, knob.Position.Y.Scale, knob.Position.Y.Offset)
-	timeLabel.Text = "Time: " .. selectedTime .. "s"
+    -- 🚀 Fire the new remote
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("RestartMatch"):FireServer()
+
+    -- Reset the display and interactions
+    timeLabel.Text = "Time: " .. selectedTime .. "s"
+    sliderBG.Active = true
+    knob.Active = true
+    running = false
 end
 
-sliderBG.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		dragging = true
-		main.Draggable = false
-		updateSlider(input.Position.X)
-	end
-end)
-
-UIS.InputChanged:Connect(function(input)
-	if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-		updateSlider(input.Position.X)
-	end
-end)
-
-UIS.InputEnded:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		dragging = false
-		main.Draggable = true
-	end
-end)
-
--- Countdown and restart logic
-local running = false
-button.MouseButton1Click:Connect(function()
-	if running then return end
-	running = true
-
-	button.Text = "Running..."
-	button.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-	button.Active = false
-	sliderBG.Active = false
-	knob.Active = false
-
-	for i = selectedTime, 0, -1 do
-		timeLabel.Text = "Time: " .. i .. "s"
-		task.wait(1)
-	end
-
-	-- 🚀 Fire the new remote
-	game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("RestartMatch"):FireServer()
-
-	-- Reset
-	timeLabel.Text = "Time: " .. selectedTime .. "s"
-	button.Text = "Start"
-	button.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-	button.Active = true
-	sliderBG.Active = true
-	knob.Active = true
-	running = false
-end)
+-- Immediately start the countdown when the script runs
+startCountdown()
