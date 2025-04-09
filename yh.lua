@@ -32,7 +32,7 @@ local timeLabel = Instance.new("TextLabel", main)
 timeLabel.Position = UDim2.new(0.5, -50, 0, 60)  
 timeLabel.Size = UDim2.new(0, 100, 0, 25) 
 timeLabel.BackgroundTransparency = 1
-timeLabel.Text = "Time: 3530s"
+timeLabel.Text = "Time: 3550s"
 timeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 timeLabel.Font = Enum.Font.Gotham
 timeLabel.TextSize = 16  
@@ -70,7 +70,7 @@ credit.TextXAlignment = Enum.TextXAlignment.Right
 
 
 local running = false
-local selectedTime = 3530  -- change if you want
+local selectedTime = 3550  -- change if you want
 
 local function updateSliderPosition(timeLeft)
     local percentLeft = timeLeft / selectedTime
