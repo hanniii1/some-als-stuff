@@ -1,4 +1,4 @@
-if game.PlaceId == 12886143095 then
+if game.PlaceId == 12900046592 then
     local player = game.Players.LocalPlayer
     local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
     gui.Name = "TeleportTimerGUI"
